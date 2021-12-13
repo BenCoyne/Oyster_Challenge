@@ -1,9 +1,9 @@
 class OysterCard
-  DEFAULT_CAPACITY = 0
+  DEFAULT_BALANCE = 0
   BALANCE_LIMIT = 90
   attr_reader :balance, :travelling
 
-  def initialize(balance = DEFAULT_CAPACITY)
+  def initialize(balance = DEFAULT_BALANCE)
     @balance = balance
     @travelling = false
   end
