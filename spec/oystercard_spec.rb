@@ -10,7 +10,7 @@ describe OysterCard do
     it { is_expected.to respond_to(:balance) }
 
     it "has a default balance (£DEFAULT_CAPACITY)" do
-      expect(oystercard.balance).to eq(OysterCard::DEFAULT_CAPACITY)
+      expect(oystercard.balance).to eq(OysterCard::DEFAULT_BALANCE)
     end
   end
 
