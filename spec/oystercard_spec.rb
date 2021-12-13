@@ -13,4 +13,21 @@ describe OysterCard do
       expect(oystercard.balance).to eq(OysterCard::DEFAULT_CAPACITY)
     end
   end
+
+  describe '#top_up' do
+  # In order to use public transport
+  # As a customer
+  # I want money on my card
+    it { is_expected.to respond_to(:top_up).with(1).argument }
+
+    it "can be topped up by a specified amount" do
+      expect(oystercard.top_up(10)).to eq(10)
+    end
+
+    context "when the oyster balance is greater than BALANCE_LIMIT" do
+      it "raises an error" do
+        expect { oystercard.top_up(91) }.to raise_error "ERROR: MAX-BALANCE IS #{OysterCard::BALANCE_LIMIT}"
+      end
+    end
+  end
 end

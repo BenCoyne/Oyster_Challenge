@@ -1,12 +1,14 @@
 class OysterCard
   DEFAULT_CAPACITY = 0
-  attr_reader :balance
+  BALANCE_LIMIT = 90
+  attr_reader :balance, :amount
+
   def initialize(balance = DEFAULT_CAPACITY)
     @balance = balance
   end
+
+  def top_up(amount)
+    raise "ERROR: MAX-BALANCE IS #{BALANCE_LIMIT}" if @balance + amount > BALANCE_LIMIT
+    @balance += amount
+  end
 end
-
-my_card = OysterCard.new(10)
-
-my_card.balance
-
