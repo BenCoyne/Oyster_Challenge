@@ -30,4 +30,16 @@ describe OysterCard do
       end
     end
   end
+
+  describe "#deduct" do
+    # In order to pay for my journey
+    # As a customer
+    # I need my fare deducted from my card
+    it { is_expected.to respond_to(:deduct).with(1).argument }
+
+    it "can deduct a specified amount" do
+      oystercard.top_up(20)
+      expect(oystercard.deduct(10)).to eq(10)
+    end
+  end
 end
