@@ -42,4 +42,35 @@ describe OysterCard do
       expect(oystercard.deduct(10)).to eq(10)
     end
   end
+
+  # In order to get through the barriers.
+  # As a customer
+  # I need to touch in and out.
+
+  describe "in_journey?" do
+    it { is_expected.to respond_to(:in_journey?) }
+
+    it "returns @travelling" do
+      expect(oystercard.in_journey?).to eq(oystercard.travelling)
+    end
+  end
+
+  describe "touch_in" do
+    it { is_expected.to respond_to(:touch_in) }
+
+    it "returns if card is in journey" do
+      oystercard.touch_in
+      expect(oystercard).to be_in_journey
+    end
+  end
+
+  describe "touch_out" do
+    it { is_expected.to respond_to(:touch_out) }
+
+    it "returns if card is in journey" do
+      oystercard.touch_in
+      oystercard.touch_out
+      expect(oystercard).not_to be_in_journey
+    end
+  end
 end
