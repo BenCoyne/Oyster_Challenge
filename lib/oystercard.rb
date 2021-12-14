@@ -1,6 +1,8 @@
 class OysterCard
   DEFAULT_BALANCE = 0
+  MIN_TOUCH_IN_BALANCE = 1
   BALANCE_LIMIT = 90
+  
   attr_reader :balance, :travelling
 
   def initialize(balance = DEFAULT_BALANCE)
@@ -9,7 +11,8 @@ class OysterCard
   end
 
   def top_up(amount)
-    raise "ERROR: MAX-BALANCE IS #{BALANCE_LIMIT}" if @balance + amount > BALANCE_LIMIT
+    @amount = amount
+    raise "ERROR: MAX-BALANCE IS #{BALANCE_LIMIT}" if limit?
     @balance += amount
   end
 
@@ -17,7 +20,8 @@ class OysterCard
     @balance -= amount
   end
 
-  def touch_in 
+  def touch_in
+    raise "ERROR: INSUFFICIENT FUNDS FOR TOUCH_IN" if balance < MIN_TOUCH_IN_BALANCE
     @travelling = true
   end
   
@@ -27,6 +31,12 @@ class OysterCard
  
   def in_journey?
     @travelling
+  end
+
+  private
+
+  def limit?
+    @balance + @amount > BALANCE_LIMIT
   end
 
 end

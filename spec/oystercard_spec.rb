@@ -39,7 +39,7 @@ describe OysterCard do
 
     it "can deduct a specified amount" do
       oystercard.top_up(20)
-      expect(oystercard.deduct(10)).to eq(10)
+      expect{ oystercard.deduct(10) }.to change{ oystercard.balance }.by -10
     end
   end
 
@@ -59,8 +59,17 @@ describe OysterCard do
     it { is_expected.to respond_to(:touch_in) }
 
     it "returns if card is in journey" do
+      oystercard.top_up(OysterCard::BALANCE_LIMIT)
       oystercard.touch_in
       expect(oystercard).to be_in_journey
+    end
+
+    # In order to pay for my journey
+    # As a customer
+    # I need to have the minimum amount (£1) for a single journey.
+    it "raises error if balance < 1"  do
+      oystercard.deduct(OysterCard::BALANCE_LIMIT)
+      expect { oystercard.touch_in }.to raise_error "ERROR: INSUFFICIENT FUNDS FOR TOUCH_IN"
     end
   end
 
@@ -68,6 +77,7 @@ describe OysterCard do
     it { is_expected.to respond_to(:touch_out) }
 
     it "returns if card is in journey" do
+      oystercard.top_up(OysterCard::BALANCE_LIMIT)
       oystercard.touch_in
       oystercard.touch_out
       expect(oystercard).not_to be_in_journey
