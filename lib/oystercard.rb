@@ -1,8 +1,8 @@
 class OysterCard
   DEFAULT_BALANCE = 0
   MIN_TOUCH_IN_BALANCE = 1
-  BALANCE_LIMIT = 90
-  
+  MAX_BALANCE = 90
+
   attr_reader :balance, :travelling
 
   def initialize(balance = DEFAULT_BALANCE)
@@ -12,12 +12,8 @@ class OysterCard
 
   def top_up(amount)
     @amount = amount
-    raise "ERROR: MAX-BALANCE IS #{BALANCE_LIMIT}" if limit?
+    raise "ERROR: MAX-BALANCE IS #{MAX_BALANCE}" if limit?
     @balance += amount
-  end
-
-  def deduct(amount)
-    @balance -= amount
   end
 
   def touch_in
@@ -26,6 +22,7 @@ class OysterCard
   end
   
   def touch_out
+    deduct(MIN_TOUCH_IN_BALANCE)
     @travelling = false
   end
  
@@ -35,8 +32,12 @@ class OysterCard
 
   private
 
+  def deduct(amount)
+    @balance -= amount
+  end
+  
   def limit?
-    @balance + @amount > BALANCE_LIMIT
+    @balance + @amount > MAX_BALANCE
   end
 
 end
