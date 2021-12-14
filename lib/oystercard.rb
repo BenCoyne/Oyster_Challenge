@@ -3,7 +3,7 @@ class OysterCard
   MIN_TOUCH_IN_BALANCE = 1
   MAX_BALANCE = 90
 
-  attr_reader :balance, :travelling, :entry_station
+  attr_reader :balance, :entry_station
 
   def initialize(balance = DEFAULT_BALANCE)
     @balance = balance
