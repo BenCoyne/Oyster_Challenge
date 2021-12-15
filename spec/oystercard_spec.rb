@@ -3,6 +3,8 @@ require 'oystercard'
 describe OysterCard do
   subject(:oystercard) { described_class.new }
   let(:station) { double :station }
+  let(:entry_station) { double :station }
+  let(:exit_station) { double :station }
 
   it { is_expected.to respond_to(:balance) }
 
@@ -62,34 +64,48 @@ describe OysterCard do
     # As a customer
     # I need to have the minimum amount (£1) for a single journey.
     it "raises error if balance < 1"  do
-      oystercard.touch_out
+      oystercard.touch_out(station)
       expect { oystercard.touch_in(station) }.to raise_error "ERROR: INSUFFICIENT FUNDS FOR TOUCH_IN"
     end
   end
 
   describe "touch_out" do
 
-    it { is_expected.to respond_to(:touch_out) }
+    it { is_expected.to respond_to(:touch_out).with(1).argument }
 
     context "oystercard at max-balance" do
       before{oystercard.top_up(OysterCard::MAX_BALANCE)}
       before{oystercard.touch_in(station)}
 
+      it "after touch_out journey_history not empty" do
+        oystercard.touch_in(entry_station)
+        oystercard.touch_out(exit_station)
+        expect(oystercard.journey_history).to_not be_empty
+      end
+
       it "returns if card is in journey" do
-        oystercard.touch_out
+        oystercard.touch_out(station)
         expect(oystercard).not_to be_in_journey
       end
 
       it "returns entry_station to nil" do # Test Possibly not needed? 
-        oystercard.touch_out
+        oystercard.touch_out(station)
         expect(oystercard.entry_station).to eq (nil)
       end
       # In order to pay for my journey
       # As a customer
       # When my journey is complete, I need the correct amount deducted from my card
       it "charges the minimum fair" do
-        expect{ oystercard.touch_out }.to change{ oystercard.balance }.by -(OysterCard::MIN_TOUCH_IN_BALANCE)
+        expect{ oystercard.touch_out(station) }.to change{ oystercard.balance }.by -(OysterCard::MIN_TOUCH_IN_BALANCE)
       end
+    end
+  end
+
+  describe "#journey_history" do
+    it { is_expected.to respond_to(:journey_history) }
+
+    it "starts empty" do
+      expect(oystercard.journey_history).to be_empty
     end
   end
 end
