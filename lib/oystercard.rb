@@ -20,7 +20,8 @@ class OysterCard
 
   def touch_in(station)
     raise 'ERROR: INSUFFICIENT FUNDS FOR TOUCH_IN' if balance < MIN_TOUCH_IN_BALANCE
-
+    # @journey = Journey.new(station)
+    # 
     @entry_station = station
   end
 
@@ -29,10 +30,12 @@ class OysterCard
     @exit_station = station
     journey_maker(entry_station, exit_station)
     @entry_station = nil
+    #@journey.exit_journey(station)
   end
 
   def journey_maker(entry_station, exit_station)
-    journey_history << {in: entry_station, out: exit_station }
+     journey_history << {in: entry_station, out: exit_station }
+    # journey_history << {journey.finish_journey} ??
   end
 
   def in_journey?
