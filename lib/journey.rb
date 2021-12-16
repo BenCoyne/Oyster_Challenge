@@ -16,20 +16,8 @@ class Journey
   end
 
   def fare
-    if @entry_station == nil || @exit_station == nil
-      return 6
-    else
-      return 1
-    end
+    return 6 if (!@entry_station or !@exit_station)
+    1
   end
-
-  # def fare
-  #   @entry_station == nil || @exit_station == nil ? PENALTY_FARE : 1
-  # end
-
+  
 end
-
-# my_journey = Journey.new
-# my_journey.exit_station = "South"
-# puts my_journey.finish_journey
-# puts my_journey.fare

@@ -1,14 +1,16 @@
+require_relative 'journey'
+
 class OysterCard
   DEFAULT_BALANCE = 0
   MIN_TOUCH_IN_BALANCE = 1
   MAX_BALANCE = 90
 
-  attr_reader :balance, :entry_station, :exit_station, :journey_history
+  attr_reader :balance, :exit_station, :journey_history, :journey
 
   def initialize(balance = DEFAULT_BALANCE)
     @balance = balance
-    @entry_station = nil
     @journey_history = []
+    
   end
 
   def top_up(amount)
@@ -20,27 +22,22 @@ class OysterCard
 
   def touch_in(station)
     raise 'ERROR: INSUFFICIENT FUNDS FOR TOUCH_IN' if balance < MIN_TOUCH_IN_BALANCE
-    # @journey = Journey.new(station)
-    # 
-    @entry_station = station
+    @journey = Journey.new(station)
   end
 
   def touch_out(station)
-    deduct(MIN_TOUCH_IN_BALANCE)
-    @exit_station = station
-    journey_maker(entry_station, exit_station)
-    @entry_station = nil
-    #@journey.exit_journey(station)
+    @journey.exit_station = station
+    journey_maker
+    deduct(@journey.fare)
   end
 
-  def journey_maker(entry_station, exit_station)
-     journey_history << {in: entry_station, out: exit_station }
-    # journey_history << {journey.finish_journey} ??
+  def journey_maker
+    journey_history << journey.finish_journey 
   end
 
-  def in_journey?
-    @entry_station != nil && @exit_station == nil
-  end
+  # def in_journey?
+  #   @entry_station != nil && @exit_station == nil
+  # end
 
   private
 
@@ -52,3 +49,11 @@ class OysterCard
     @balance + @amount > MAX_BALANCE
   end
 end
+
+# card = OysterCard.new
+# card.top_up(10)
+# card.touch_in("North")
+# card.touch_out("South")
+# card.touch_in("East")
+# card.touch_out("West")
+# print card.journey_history
