@@ -16,8 +16,8 @@ class Journey
   end
 
   def fare
-    return 6 if (!@entry_station or !@exit_station)
+    return PENALTY_FARE if (!@entry_station or !@exit_station)
     1
   end
-  
+
 end

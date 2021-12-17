@@ -10,7 +10,6 @@ class OysterCard
   def initialize(balance = DEFAULT_BALANCE)
     @balance = balance
     @journey_history = []
-    
   end
 
   def top_up(amount)
@@ -35,10 +34,6 @@ class OysterCard
     journey_history << journey.finish_journey 
   end
 
-  # def in_journey?
-  #   @entry_station != nil && @exit_station == nil
-  # end
-
   private
 
   def deduct(amount)
@@ -50,10 +45,4 @@ class OysterCard
   end
 end
 
-# card = OysterCard.new
-# card.top_up(10)
-# card.touch_in("North")
-# card.touch_out("South")
-# card.touch_in("East")
-# card.touch_out("West")
-# print card.journey_history
+
